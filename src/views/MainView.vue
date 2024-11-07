@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrap">
     <div class="fixed-height">
-      <v-infinite-scroll height="500" @load="loadFirstList">
+      <v-infinite-scroll class="vuetify-infinite" height="500" @load="loadFirstList">
         <template v-for="item in firstList" :key="item.id.value">
           <list-element :item="item"></list-element>
         </template>
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import InfiniteCustomScroll from '../components/InfiniteCustomScroll.vue'
 import ListElement from '@/components/ListElement.vue'
-import { type ListItem, type Loading, type InfiniteScrollStatus } from '@/types'
+import { type ListItem, type InfiniteScrollStatus } from '@/types'
 import { loadUsers } from '@/api'
 import { ref } from 'vue'
 
@@ -43,8 +43,7 @@ async function loadFirstList({ done }: { done: (status: InfiniteScrollStatus) =>
   }
 }
 
-const loadSecondList = async ({ isLoading }: Loading) => {
-  isLoading.value = true
+const loadSecondList = async () => {
   try {
     const response = await loadUsers()
 
@@ -53,13 +52,10 @@ const loadSecondList = async ({ isLoading }: Loading) => {
     }
   } catch (error) {
     console.error('Ошибка загрузки данных:', error)
-  } finally {
-    isLoading.value = false
   }
 }
 
-const loadThirdList = async ({ isLoading }: Loading) => {
-  isLoading.value = true
+const loadThirdList = async () => {
   try {
     const response = await loadUsers()
     if (response?.length) {
@@ -67,8 +63,6 @@ const loadThirdList = async ({ isLoading }: Loading) => {
     }
   } catch (error) {
     console.error('Ошибка загрузки данных:', error)
-  } finally {
-    isLoading.value = false
   }
 }
 </script>
@@ -78,6 +72,11 @@ const loadThirdList = async ({ isLoading }: Loading) => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0 2rem;
+}
+
+.vuetify-infinite {
+  gap: 16px;
+  padding: 0 10px;
 }
 
 .fixed-height {

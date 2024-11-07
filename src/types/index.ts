@@ -13,11 +13,5 @@ export interface ListItem {
   }
 }
 
-export interface Loading {
-  isLoading: {
-    value: boolean
-  }
-}
-
 export declare type InfiniteScrollStatus = 'ok' | 'empty' | 'loading' | 'error';
 

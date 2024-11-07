@@ -10,10 +10,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, defineProps } from 'vue'
-import { type Loading } from '@/types'
 const props = defineProps<{
   height?: number
-  loadMore: ({ isLoading }: Loading) => Promise<void>
+  loadMore: () => Promise<void>
 }>()
 const isLoading = ref(false)
 
@@ -23,9 +22,11 @@ const elementToObserve = ref<HTMLElement | null>(null)
 
 const scrollTrigger = () => {
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+    entries.forEach(async (entry) => {
       if (entry.isIntersecting && !isLoading.value) {
-        loadMore({ isLoading })
+        isLoading.value = true
+        await loadMore()
+        isLoading.value = false
       }
     })
   })
